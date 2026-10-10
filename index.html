@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Troop 537">
+<title>Troop 537 Orders</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#1d1d1b;--muted:#6b675e;--line:#e2ddd2;--accent:#1f5e3b;--accent2:#a3262a;--chip:#eef3ef;--warn:#b26b00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141513;--card:#1e201d;--ink:#eceae4;--muted:#9b978d;--line:#33352f;--accent:#5fb184;--accent2:#e0686b;--chip:#243128;--warn:#e0a040}}
+:root[data-theme="dark"]{--bg:#141513;--card:#1e201d;--ink:#eceae4;--muted:#9b978d;--line:#33352f;--accent:#5fb184;--accent2:#e0686b;--chip:#243128;--warn:#e0a040}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+body{padding:env(safe-area-inset-top) 0 calc(90px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+h1{font-size:20px;margin:0}
+.sub{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:6px;margin-top:10px}
+.tabs button{flex:1;padding:9px 4px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font-size:14px;font-weight:600}
+.tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{padding:12px 16px;max-width:640px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+input[type=text],input[type=tel],textarea{width:100%;font-size:16px;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+textarea{min-height:60px;resize:vertical}
+.row{display:flex;gap:8px;align-items:center}
+.btn{border:0;border-radius:10px;padding:11px 14px;font-size:15px;font-weight:600;background:var(--accent);color:#fff}
+.btn.alt{background:var(--chip);color:var(--ink)}
+.btn.red{background:var(--accent2)}
+.btn:disabled{opacity:.5}
+.gps{white-space:nowrap}
+.status{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+details{border-top:1px solid var(--line)}
+details:first-of-type{border-top:0}
+summary{list-style:none;padding:12px 0;font-weight:700;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary .rng{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+details[open] summary .rng{display:none}
+summary>span:first-child::before{content:"▸ ";color:var(--muted)}
+details[open] summary>span:first-child::before{content:"▾ "}
+summary .cnt{color:var(--accent);font-weight:600;font-size:14px}
+.item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px dashed var(--line);gap:8px}
+.item .nm{font-size:15px}
+.item .pr{font-size:13px;color:var(--muted)}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:20px;line-height:1}
+.step span{min-width:22px;text-align:center;font-weight:700}
+.step.has span{color:var(--accent)}
+.deal{font-size:12px;color:var(--warn);padding:2px 0 6px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{padding:9px 13px;border-radius:20px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px}
+.pills button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.checks{display:flex;gap:16px;margin-top:12px}
+.checks label{display:flex;align-items:center;gap:6px;margin:0;color:var(--ink);font-size:15px}
+.checks input{width:20px;height:20px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:6}
+.bar .tot{font-size:22px;font-weight:800}
+.bar .tot small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.ord{padding:12px 0;border-top:1px solid var(--line)}
+.ord:first-child{border-top:0}
+.ord .top{display:flex;justify-content:space-between;gap:8px}
+.ord .who{font-weight:700}
+.ord .amt{font-weight:800}
+.ord .meta{font-size:13px;color:var(--muted)}
+.ord .lines{font-size:14px;margin:4px 0}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;background:var(--chip);margin-right:4px}
+.tag.no{background:transparent;border:1px solid var(--warn);color:var(--warn)}
+.ord .acts{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ord .acts .btn{padding:7px 11px;font-size:13px}
+a{color:var(--accent)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:var(--bg);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:6px 0;border-top:1px solid var(--line)}
+td:last-child{text-align:right;font-weight:700}
+#itemTable td:nth-child(2),#itemTable td:nth-child(3){text-align:center;font-weight:700;width:58px}
+#itemTable td.th{font-size:12px;color:var(--muted);font-weight:500;border-top:0}
+#itemTable tr.sec td{font-weight:800;padding-top:12px;border-top:2px solid var(--line)}
+#itemTable td.m{color:var(--muted);font-weight:500}
+.empty{color:var(--muted);text-align:center;padding:20px 0}
+.hide{display:none!important}
+.search{margin-bottom:10px;width:100%;font-size:16px;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.filt{margin-bottom:10px}
+.filt button{flex:1}
+.donebtn{width:100%;margin-top:10px;padding:13px}
+.ord.done{opacity:.6}
+.ord.done .who{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Troop 537 Fundraiser</h1>
+  <div class="sub" id="saveNote">saves automatically</div>
+  <div class="tabs">
+    <button data-tab="new" class="on" id="tabNew">New order</button>
+    <button data-tab="list">Orders <span id="ordCount"></span></button>
+    <button data-tab="sum">Totals</button>
+  </div>
+</header>
+
+<main>
+  <section id="new">
+    <div class="card">
+      <label for="name">Customer name</label>
+      <input type="text" id="name" autocomplete="off">
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" autocomplete="off">
+      <label for="email">Email</label>
+      <input type="text" id="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <label for="addr">Address</label>
+      <div class="row">
+        <input type="text" id="addr" autocomplete="off">
+        <button class="btn gps" id="gpsBtn">📍 GPS</button>
+      </div>
+      <div class="status" id="gpsStatus"></div>
+    </div>
+
+    <div class="card" id="menu"></div>
+
+    <div class="card">
+      <label style="margin-top:0">How they'll pay</label>
+      <div class="pills" id="pay"></div>
+      <label for="notes">Notes</label>
+      <textarea id="notes"></textarea>
+    </div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn alt" id="clearBtn">Clear form</button>
+    </div>
+  </section>
+
+  <section id="list" class="hide">
+    <div class="pills filt" id="filt"></div>
+    <input type="text" id="q" class="search" placeholder="search name / address">
+    <div class="card" id="orders"></div>
+  </section>
+
+  <section id="sum" class="hide">
+    <div class="card"><div class="stats" id="stats"></div></div>
+    <div class="card"><b>Items to order from the troop</b><table id="itemTable"></table></div>
+    <div class="card"><b>By payment</b><table id="payTable"></table></div>
+    <div class="card">
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn" id="csvBtn">Export CSV</button>
+        <button class="btn" id="txtBtn">Export everything (.txt)</button>
+        <button class="btn alt" id="copyBtn">Copy everything</button>
+        <button class="btn alt" id="impBtn">Restore backup</button>
+        <input type="file" id="impFile" accept=".txt,.json,text/plain,application/json" class="hide">
+      </div>
+      <div class="status" id="ioStatus"></div>
+    </div>
+  </section>
+</main>
+
+<div class="bar" id="bar">
+  <div class="tot"><span id="tot">$0</span><small id="totNote">no items yet</small></div>
+  <button class="btn" id="saveBtn">Save order</button>
+</div>
+
+<script>
+(()=>{
+const MENU=[
+ {sec:"Diwali sweets",items:[
+  ["kk","Kaju Katli (14oz)",19],["bk","Badam Katli (14oz)",19],["kpr","Kaju Pista Roll (14oz)",19],["lad","Assorted Ladoos (14oz)",16],
+  ["vpl","Variety Pack L (14oz)",20],["vps","Variety Pack S (8oz)",14],["col","Sweets Collection (4 x 14oz)",69]]},
+ {sec:"Snacks — $4, 3 for $10",grp:"snack",items:[
+  ["sm","Mullu Murukku",4],["sb","Spicy Boondi",4],["sr","Ribbon Pakoda",4],["st","Tengual",4]]},
+ {sec:"Peanuts — $6, 3 for $15",grp:"pea",items:[
+  ["pt","Tangy Pepper Peanuts",6],["pc","Chili Lime Peanuts",6],["ps","Spicy Peanuts",6]]},
+ {sec:"Cashews — $16, 2 for $29",grp:"cash",items:[
+  ["ct","Tangy Pepper Cashews",16],["cs","Spicy Cashews",16]]},
+ {sec:"Diyas & lights",items:[
+  ["d4","Diya 4-pack",7],["d8","Diya 8-pack",13],["li","Lights 100 — Indoor",6],["lo","Lights 100 — Outdoor",12]]},
+ {sec:"Wreaths & greenery",items:[
+  ["pvw","Premium Voyager Wreath",50],["bw25","Balsam Fir Wreath 25\"",34],["bw36","Balsam Fir Wreath 36\"",65],["bw48","Balsam Fir Wreath 48\"",95],
+  ["g25","Balsam Garland 25'",55],["g50","Balsam Garland 50'",95],["pvs","Premium Voyager Door Swag",45],["bds","Balsam Door Swag",33],
+  ["hc","Holiday Centerpiece",50],["cx","Christmas Cross",50],["cc","Candy Cane",50]]},
+ {sec:"Gift baskets",items:[
+  ["mtb","Movie Time Bucket",35],["wb","Winter Basket",25],["wr","Minnesota Wild Rice",25]]}
+];
+const DEALS={snack:{n:3,p:10,u:4},pea:{n:3,p:15,u:6},cash:{n:2,p:29,u:16}};
+const PAYS=["Cash","Check","Venmo","Zelle","Card"];
+const ITEM={};MENU.forEach(s=>s.items.forEach(([id,nm,pr])=>ITEM[id]={id,nm,pr,grp:s.grp||null}));
+const KEY="t537_orders_v1",DKEY="t537_draft_v1";
+const $=id=>document.getElementById(id);
+const money=n=>"$"+(Math.round(n*100)/100).toLocaleString(undefined,{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let orders=[],draft=blank(),editing=null,db=null,dbRef=null;
+
+function blank(){return{name:"",phone:"",email:"",addr:"",lat:null,lon:null,qty:{},pay:"",paid:false,delivered:false,notes:""}}
+function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+
+function priceOf(qty){
+  let t=0,gc={};
+  for(const[id,q]of Object.entries(qty)){if(!q||!ITEM[id])continue;const it=ITEM[id];if(it.grp)gc[it.grp]=(gc[it.grp]||0)+q;else t+=it.pr*q}
+  let saved=0;
+  for(const[g,c]of Object.entries(gc)){const d=DEALS[g];const v=Math.floor(c/d.n)*d.p+(c%d.n)*d.u;t+=v;saved+=c*d.u-v}
+  return{t,saved}
+}
+function count(qty){return Object.values(qty).reduce((a,b)=>a+(b||0),0)}
+
+function buildMenu(){
+  $("menu").innerHTML=MENU.map((s,i)=>{const ps=s.items.map(x=>x[2]),lo=Math.min(...ps),hi=Math.max(...ps);return`<details data-sec="${i}"><summary><span>${esc(s.sec)}<small class="rng">${s.items.length} options · ${lo===hi?money(lo):money(lo)+"–"+money(hi)} · tap to open</small></span><span class="cnt" id="c${i}"></span></summary>
+  ${s.grp?`<div class="deal" id="deal-${s.grp}"></div>`:""}
+  ${s.items.map(([id,nm,pr])=>`<div class="item"><div><div class="nm">${esc(nm)}</div><div class="pr">${money(pr)}</div></div>
+  <div class="step" id="s-${id}"><button data-id="${id}" data-d="-1">−</button><span id="q-${id}">0</span><button data-id="${id}" data-d="1">+</button></div></div>`).join("")}</details>`}).join("");
+  $("menu").addEventListener("click",e=>{const b=e.target.closest("button[data-id]");if(!b)return;const id=b.dataset.id;draft.qty[id]=Math.max(0,(draft.qty[id]||0)+ +b.dataset.d);if(!draft.qty[id])delete draft.qty[id];saveDraft();paintQty()});
+  $("pay").innerHTML=PAYS.map(p=>`<button data-p="${p}">${p}</button>`).join("");
+  $("pay").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;draft.pay=draft.pay===b.dataset.p?"":b.dataset.p;saveDraft();paintForm()});
+}
+
+function paintQty(){
+  for(const id in ITEM){const q=draft.qty[id]||0;$("q-"+id).textContent=q;$("s-"+id).classList.toggle("has",q>0)}
+  MENU.forEach((s,i)=>{const c=s.items.reduce((a,[id])=>a+(draft.qty[id]||0),0);$("c"+i).textContent=c?c+" ✓":""});
+  for(const g in DEALS){const el=$("deal-"+g);if(!el)continue;const c=Object.keys(draft.qty).filter(id=>ITEM[id]?.grp===g).reduce((a,id)=>a+draft.qty[id],0);const d=DEALS[g];const r=c%d.n;el.textContent=c?(r?`mix & match: add ${d.n-r} more for the deal`:"deal applied"):"mix & match any flavors"}
+  const{t,saved}=priceOf(draft.qty),n=count(draft.qty);
+  $("tot").textContent=money(t);
+  $("totNote").textContent=n?`${n} item${n>1?"s":""}${saved?` · saved ${money(saved)}`:""}${editing?" · editing":""}`:(editing?"editing":"no items yet");
+  $("saveBtn").textContent=editing?"Update order":"Save order";
+}
+function paintForm(){
+  $("name").value=draft.name;$("phone").value=draft.phone;$("email").value=draft.email||"";$("addr").value=draft.addr;$("notes").value=draft.notes;
+  [...$("pay").children].forEach(b=>b.classList.toggle("on",b.dataset.p===draft.pay));
+  paintQty();
+}
+["name","phone","email","addr","notes"].forEach(k=>$(k).addEventListener("input",e=>{draft[k]=e.target.value;if(k==="addr"){draft.lat=null;draft.lon=null}saveDraft()}));
+
+function saveDraft(){ls(DKEY,{draft,editing})}
+
+async function gps(){
+  const st=$("gpsStatus"),btn=$("gpsBtn");
+  if(!navigator.geolocation){st.textContent="gps not supported here, type it in";return}
+  btn.disabled=true;st.textContent="getting location…";
+  navigator.geolocation.getCurrentPosition(async p=>{
+    const{latitude:la,longitude:lo,accuracy:ac}=p.coords;
+    draft.lat=+la.toFixed(6);draft.lon=+lo.toFixed(6);
+    st.textContent=`got it (±${Math.round(ac)}m), finding address…`;
+    let a=null;
+    try{
+      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${la}&lon=${lo}&zoom=18&addressdetails=1`,{headers:{"Accept":"application/json"}});
+      const j=await r.json(),x=j.address||{};
+      const street=[x.house_number,x.road].filter(Boolean).join(" ");
+      const city=x.city||x.town||x.village||x.suburb||x.hamlet||"";
+      a=[street,city].filter(Boolean).join(", ")||j.display_name;
+    }catch(e){}
+    if(!a){try{const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${la}&longitude=${lo}&localityLanguage=en`);const j=await r.json();a=[j.locality,j.principalSubdivision].filter(Boolean).join(", ")}catch(e){}}
+    draft.addr=a||`${draft.lat}, ${draft.lon}`;$("addr").value=draft.addr;
+    st.innerHTML=a?`check the house # — gps can be off by a house or two · <a href="https://maps.apple.com/?ll=${draft.lat},${draft.lon}&q=pin" target="_blank">map</a>`:"couldn't look up the street, saved the coordinates — type the address";
+    btn.disabled=false;saveDraft();
+  },err=>{btn.disabled=false;st.textContent=err.code===1?"location blocked — allow it in Settings › Privacy › Location Services › Safari Websites":"couldn't get location, try again outside";},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+$("gpsBtn").onclick=gps;
+
+function persist(){
+  ls(KEY,orders);
+  $("ordCount").textContent=orders.length?`(${orders.length})`:"";
+  if(dbRef)dbRef.set({orders:JSON.stringify(orders),at:Date.now()}).then(()=>note("saved ✓ (cloud + phone)")).catch(()=>note("saved on phone"));
+  else note("saved on phone ✓");
+}
+let nt;function note(t){$("saveNote").textContent=t;clearTimeout(nt);nt=setTimeout(()=>$("saveNote").textContent="saves automatically",2500)}
+
+$("saveBtn").onclick=()=>{
+  const n=count(draft.qty);
+  if(!draft.name.trim()&&!draft.addr.trim()){alertish("add a name or address first");return}
+  if(!n){alertish("no items picked");return}
+  const{t}=priceOf(draft.qty);
+  const rec={...draft,qty:{...draft.qty},total:t,updated:Date.now()};
+  if(editing){const i=orders.findIndex(o=>o.id===editing);if(i>-1)orders[i]={...orders[i],...rec}}
+  else orders.unshift({...rec,id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),created:Date.now()});
+  persist();draft=blank();editing=null;saveDraft();paintForm();$("gpsStatus").textContent="";
+  document.querySelectorAll("#menu details").forEach(d=>d.open=false);
+  window.scrollTo(0,0);note("order saved ✓");
+};
+function alertish(t){$("totNote").textContent=t;$("totNote").style.color="var(--accent2)";setTimeout(()=>{$("totNote").style.color="";paintQty()},2000)}
+let clr=0;$("clearBtn").onclick=()=>{if(!clr){clr=1;$("clearBtn").textContent="tap again to clear";setTimeout(()=>{clr=0;$("clearBtn").textContent="Clear form"},2500);return}clr=0;$("clearBtn").textContent="Clear form";draft=blank();editing=null;saveDraft();paintForm();$("gpsStatus").textContent=""};
+
+function lines(o){return Object.entries(o.qty).map(([id,q])=>`${q}× ${ITEM[id]?.nm||id}`).join(", ")}
+function paintList(){
+  const q=$("q").value.toLowerCase().trim();
+  const isDone=o=>o.delivered&&o.paid;
+  const nTodo=orders.filter(o=>!isDone(o)).length,nDone=orders.length-nTodo;
+  $("filt").innerHTML=[["todo",`To do (${nTodo})`],["done",`Done (${nDone})`],["all",`All (${orders.length})`]].map(([k,t])=>`<button data-f="${k}" class="${filt===k?"on":""}">${t}</button>`).join("");
+  const list=orders.filter(o=>(filt==="all"||(filt==="done")===isDone(o))&&(!q||(o.name+" "+o.addr+" "+o.phone+" "+(o.email||"")).toLowerCase().includes(q)));
+  $("orders").innerHTML=list.length?list.map(o=>`<div class="ord ${isDone(o)?"done":""}"><div class="top"><div class="who">${isDone(o)?"✅ ":""}${esc(o.name||"(no name)")}</div><div class="amt">${money(o.total)}</div></div>
+  <div class="meta">${o.addr?`${esc(o.addr)} · `:""}${o.lat!=null?`<a href="https://maps.apple.com/?ll=${o.lat},${o.lon}&q=${encodeURIComponent(o.name||"order")}" target="_blank">map</a> · `:""}${o.phone?`<a href="tel:${esc(o.phone)}">${esc(o.phone)}</a> · `:""}${o.email?`<a href="mailto:${esc(o.email)}">${esc(o.email)}</a> · `:""}${new Date(o.created).toLocaleDateString()}</div>
+  <div class="lines">${esc(lines(o))}</div>
+  <div><span class="tag">${esc(o.pay||"no method")}</span><span class="tag ${o.paid?"":"no"}">${o.paid?"paid":"unpaid"}</span><span class="tag ${o.delivered?"":"no"}">${o.delivered?"delivered":"not delivered"}</span></div>
+  ${o.notes?`<div class="meta">📝 ${esc(o.notes)}</div>`:""}
+  ${isDone(o)?"":`<button class="btn donebtn" data-a="done" data-id="${o.id}">✓ Delivered &amp; paid — done</button>`}
+  <div class="acts"><button class="btn alt" data-a="paid" data-id="${o.id}">${o.paid?"mark unpaid":"mark paid"}</button><button class="btn alt" data-a="del" data-id="${o.id}">${o.delivered?"undeliver":"mark delivered"}</button><button class="btn alt" data-a="edit" data-id="${o.id}">edit</button><button class="btn red" data-a="rm" data-id="${o.id}">delete</button></div></div>`).join(""):`<div class="empty">${orders.length?"no matches":"no orders yet"}</div>`;
+}
+$("q").oninput=paintList;
+let filt="todo";
+$("filt").addEventListener("click",e=>{const b=e.target.closest("button[data-f]");if(!b)return;filt=b.dataset.f;paintList()});
+let rmPending=null;
+$("orders").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b)return;const o=orders.find(x=>x.id===b.dataset.id);if(!o)return;
+  const a=b.dataset.a;
+  if(a==="done"){o.delivered=true;o.paid=true;o.updated=Date.now();persist();paintList();note(`${o.name||"order"} done ✓`)}
+  if(a==="paid"){o.paid=!o.paid;o.updated=Date.now();persist();paintList()}
+  if(a==="del"){o.delivered=!o.delivered;o.updated=Date.now();persist();paintList()}
+  if(a==="edit"){draft={...blank(),...o,qty:{...o.qty}};editing=o.id;saveDraft();paintForm();show("new")}
+  if(a==="rm"){if(rmPending!==o.id){rmPending=o.id;b.textContent="tap again";setTimeout(()=>{if(rmPending===o.id){rmPending=null;b.textContent="delete"}},2500);return}rmPending=null;orders=orders.filter(x=>x.id!==o.id);persist();paintList()}
+});
+
+function paintSum(){
+  const tot=orders.reduce((a,o)=>a+o.total,0),paid=orders.filter(o=>o.paid).reduce((a,o)=>a+o.total,0);
+  $("stats").innerHTML=`<div class="stat"><b>${orders.length}</b><span>orders</span></div><div class="stat"><b>${money(tot)}</b><span>total sold</span></div><div class="stat"><b>${money(paid)}</b><span>collected</span></div><div class="stat"><b>${money(tot-paid)}</b><span>still owed</span></div>`;
+  const ic={},left={};orders.forEach(o=>Object.entries(o.qty).forEach(([id,q])=>{ic[id]=(ic[id]||0)+q;if(!o.delivered)left[id]=(left[id]||0)+q}));
+  const all=Object.values(ic).reduce((a,b)=>a+b,0),allLeft=Object.values(left).reduce((a,b)=>a+b,0);
+  let html=`<tr><td class="th">item</td><td class="th">need</td><td class="th">to deliver</td><td class="th">$</td></tr>`;
+  MENU.forEach(s=>{const r=s.items.filter(([id])=>ic[id]);if(!r.length)return;
+    const sd=s.grp?orders.reduce((a,o)=>a+priceOf(Object.fromEntries(Object.entries(o.qty).filter(([id])=>ITEM[id]?.grp===s.grp))).t,0):r.reduce((a,[id,,pr])=>a+pr*ic[id],0);
+    html+=`<tr class="sec"><td colspan="3">${esc(s.sec.split(" —")[0])}</td><td>${money(sd)}</td></tr>`+r.map(([id,nm,pr])=>`<tr><td>${esc(nm)}</td><td>${ic[id]}</td><td>${left[id]||0}</td><td class="m">${s.grp?"":money(pr*ic[id])}</td></tr>`).join("")});
+  html+=`<tr class="sec"><td>total</td><td>${all}</td><td>${allLeft}</td><td>${money(tot)}</td></tr>`;
+  $("itemTable").innerHTML=all?html:`<tr><td class="empty">nothing yet</td></tr>`;
+  const pc={};orders.forEach(o=>{const k=o.pay||"none";pc[k]=(pc[k]||0)+o.total});
+  $("payTable").innerHTML=Object.entries(pc).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${money(v)}</td></tr>`).join("")||`<tr><td class="empty">nothing yet</td></tr>`;
+}
+
+async function giveFile(name,text,mime){
+  const st=$("ioStatus");
+  try{const dl=await Promise.race([window.claude?.use?.("downloads"),new Promise(r=>setTimeout(()=>r(null),1500))]);if(dl){await dl.save({filename:name,data:text});st.textContent="saved "+name;return}}catch(e){}
+  const blob=new Blob([text],{type:mime});
+  try{const f=new File([blob],name,{type:mime});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f]});st.textContent="shared "+name;return}}catch(e){if(e.name==="AbortError")return}
+  const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);st.textContent="downloaded "+name;
+}
+$("csvBtn").onclick=()=>{
+  const ids=Object.keys(ITEM);const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const head=["name","phone","email","address","lat","lon","payment","paid","delivered","total","notes","date",...ids.map(id=>ITEM[id].nm)];
+  const rows=orders.map(o=>[o.name,o.phone,o.email,o.addr,o.lat,o.lon,o.pay,o.paid?"yes":"no",o.delivered?"yes":"no",o.total,o.notes,new Date(o.created).toLocaleDateString(),...ids.map(id=>o.qty[id]||"")]);
+  giveFile("troop537-orders.csv",[head,...rows].map(r=>r.map(q).join(",")).join("\n"),"text/csv");
+};
+function dump(){
+  const d=new Date(),tot=orders.reduce((a,o)=>a+o.total,0),paid=orders.filter(o=>o.paid).reduce((a,o)=>a+o.total,0);
+  const ic={},left={};orders.forEach(o=>Object.entries(o.qty).forEach(([id,q])=>{ic[id]=(ic[id]||0)+q;if(!o.delivered)left[id]=(left[id]||0)+q}));
+  let t=`TROOP 537 FUNDRAISER ORDERS\nexported ${d.toLocaleString()}\n\n`;
+  t+=`orders: ${orders.length} | sold: ${money(tot)} | collected: ${money(paid)} | owed: ${money(tot-paid)} | done: ${orders.filter(o=>o.paid&&o.delivered).length}\n\n`;
+  t+=`ITEMS TO ORDER FROM TROOP (total / still to deliver)\n`;
+  MENU.forEach(s=>s.items.forEach(([id,nm])=>{if(ic[id])t+=`  ${nm}: ${ic[id]} / ${left[id]||0}\n`}));
+  t+=`\nORDERS\n`;
+  orders.forEach((o,i)=>{
+    t+=`\n#${i+1} ${o.name||"(no name)"} — ${money(o.total)}\n`;
+    if(o.addr)t+=`  address: ${o.addr}\n`;
+    if(o.lat!=null)t+=`  gps: ${o.lat}, ${o.lon}\n`;
+    if(o.phone)t+=`  phone: ${o.phone}\n`;
+    if(o.email)t+=`  email: ${o.email}\n`;
+    t+=`  pays by: ${o.pay||"not set"} | ${o.paid?"PAID":"unpaid"} | ${o.delivered?"DELIVERED":"not delivered"}\n`;
+    t+=`  items: ${lines(o)}\n`;
+    if(o.notes)t+=`  notes: ${o.notes}\n`;
+    t+=`  taken: ${new Date(o.created).toLocaleString()}\n`;
+  });
+  t+=`\n---DATA (for restore, don't edit)---\n${JSON.stringify(orders)}\n`;
+  return t;
+}
+const stamp=()=>new Date().toISOString().slice(0,10);
+$("txtBtn").onclick=()=>giveFile(`troop537-orders-${stamp()}.txt`,dump(),"text/plain");
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(dump());$("ioStatus").textContent="copied — paste it anywhere"}catch(e){$("ioStatus").textContent="couldn't copy, use export instead"}};
+$("impBtn").onclick=()=>$("impFile").click();
+$("impFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{let raw=await f.text();const k=raw.indexOf("---DATA");if(k>-1)raw=raw.slice(raw.indexOf("\n",k)+1);const arr=JSON.parse(raw.trim());if(!Array.isArray(arr))throw 0;const have=new Set(orders.map(o=>o.id));let n=0;arr.forEach(o=>{if(o&&o.id&&!have.has(o.id)){orders.push(o);n++}});orders.sort((a,b)=>b.created-a.created);persist();paintSum();$("ioStatus").textContent=`restored ${n} order${n===1?"":"s"}`}catch(x){$("ioStatus").textContent="that file didn't work"}e.target.value=""};
+
+function show(t){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!==t));document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));$("bar").classList.toggle("hide",t!=="new");if(t==="list")paintList();if(t==="sum")paintSum();window.scrollTo(0,0)}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>show(b.dataset.tab));
+
+function merge(remote){
+  const m=new Map(orders.map(o=>[o.id,o]));
+  remote.forEach(o=>{const h=m.get(o.id);if(!h||(o.updated||0)>(h.updated||0))m.set(o.id,o)});
+  orders=[...m.values()].sort((a,b)=>b.created-a.created);
+}
+async function cloud(){
+  try{
+    const C=window.claude;if(!C?.use)return;
+    const[d,u]=await Promise.all([C.use("db"),C.use("user")]);
+    if(!d||!u)return;const uid=await u.id();if(!uid)return;
+    db=d;dbRef=db.doc("data/users/"+uid+"/state/orders");
+    const s=await dbRef.get();
+    if(s.exists){try{merge(JSON.parse(s.data().orders||"[]"))}catch(e){}}
+    ls(KEY,orders);$("ordCount").textContent=orders.length?`(${orders.length})`:"";
+    if(orders.length)dbRef.set({orders:JSON.stringify(orders),at:Date.now()}).catch(()=>{});
+    note("cloud backup on ✓");
+  }catch(e){dbRef=null}
+}
+
+orders=ls(KEY)||[];
+const sd=ls(DKEY);if(sd&&sd.draft){draft={...blank(),...sd.draft};editing=sd.editing||null}
+buildMenu();paintForm();
+$("ordCount").textContent=orders.length?`(${orders.length})`:"";
+cloud();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+})();
+</script>
+</body>
+</html>
